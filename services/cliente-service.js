@@ -35,10 +35,17 @@ module.exports = class ClienteService {
             console.log('soda a sido obtenida: ',soda); // <- verficar que soda no sea null
             const clienteCollection = await soda.createCollection(CLIENTES_COLLECTION,{
                 metaData: {
+                    tableName: 'clientes',
                     keyColumn: {
                         name: 'id',
-                        assignmentMethod: 'UUID'
+                        maxLength: 255,
+                        assignmentMethod: undefined,
+                        sqlType: 'VARCHAR2'
                     },
+                    contentColumn: {
+                        name: 'data',
+                        sqlType: 'BLOB',
+                    }
                 },
                 mode: oracledb.SODA_COLL_MAP
             });
