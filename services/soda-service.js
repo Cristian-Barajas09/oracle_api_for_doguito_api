@@ -26,6 +26,7 @@ module.exports = class SodaService {
         try {
             connection = await oracledb.getConnection();
             const soda = connection.getSodaDatabase();
+            console.log('soda a sido obtenida: ',soda); // <- verficar que soda no sea null
         
             // Obtener los nombres de todas las colecciones
             const collectionNames = await soda.getCollectionNames();
