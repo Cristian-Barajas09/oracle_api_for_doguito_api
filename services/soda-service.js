@@ -37,7 +37,7 @@ module.exports = class SodaService {
                 console.log('Nombres de las colecciones: ', names);
             });
 
-            const collectionNames = soda.getCollectionNames();
+            const collectionNames = await soda.getCollectionNames();
 
             console.log('Nombres de las colecciones: ', collectionNames);
 
