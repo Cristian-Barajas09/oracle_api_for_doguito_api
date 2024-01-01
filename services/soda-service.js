@@ -29,7 +29,14 @@ module.exports = class SodaService {
             console.log('soda a sido obtenida: ',soda); // <- verficar que soda no sea null
         
             // Obtener los nombres de todas las colecciones
-            const collectionNames = await soda.getCollectionNames();
+            const collectionNames = soda.getCollectionNames({},(err,names)=> {
+                console.log('obteniendo los nombres de las colecciones');
+                if (err) {
+                    console.error('Ha ocurrido un error: ',err);
+                    throw err;
+                }
+                console.log('Nombres de las colecciones: ', names);
+            });
         
             console.log('Nombres de las colecciones: ', collectionNames);
 
