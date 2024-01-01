@@ -32,8 +32,11 @@ module.exports = class ClienteService {
             connection = await oracledb.getConnection();
 
             const soda = connection.getSodaDatabase();
+            console.log(soda);
             const clienteCollection = await soda.createCollection(CLIENTES_COLLECTION);
+            console.log(clienteCollection)
             let clientes = await clienteCollection.find().getDocuments();
+            console.log(clientes)
             clientes.forEach((element) => {
                 result.push({
                     id: element.key,
@@ -43,7 +46,7 @@ module.exports = class ClienteService {
                 });
             });
         } catch (err) {
-            console.error(err);
+            console.error("a ocurrido un error: ",err);
         } finally {
             if (connection) {
                 try {
