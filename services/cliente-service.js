@@ -32,11 +32,11 @@ module.exports = class ClienteService {
             connection = await oracledb.getConnection();
 
             const soda = connection.getSodaDatabase();
-            console.log(soda);
+            console.log('soda a sido obtenida: ',soda); // <- verficar que soda no sea null
             const clienteCollection = await soda.createCollection(CLIENTES_COLLECTION);
-            console.log(clienteCollection)
+            console.log('collecion de clientes obtenida: ',clienteCollection)
             let clientes = await clienteCollection.find().getDocuments();
-            console.log(clientes)
+            console.log('datos de los clientes: ',clientes)
             clientes.forEach((element) => {
                 result.push({
                     id: element.key,
