@@ -33,7 +33,15 @@ module.exports = class ClienteService {
 
             const soda = connection.getSodaDatabase();
             console.log('soda a sido obtenida: ',soda); // <- verficar que soda no sea null
-            const clienteCollection = await soda.createCollection(CLIENTES_COLLECTION);
+            const clienteCollection = await soda.createCollection(CLIENTES_COLLECTION,{
+                metaData: {
+                    keyColumn: {
+                        name: 'id',
+                        assignmentMethod: 'UUID'
+                    },
+                },
+                mode: oracledb.SODA_COLL_MAP
+            });
             console.log('collecion de clientes obtenida: ',clienteCollection)
             let clientes = await clienteCollection.find().getDocuments();
             console.log('datos de los clientes: ',clientes)
