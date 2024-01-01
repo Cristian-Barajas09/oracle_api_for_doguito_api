@@ -105,7 +105,7 @@ module.exports = class ClienteService {
             connection = await oracledb.getConnection();
             const soda = connection.getSodaDatabase();
             const clientesCollection = await soda.createCollection(
-                CLIENTES_COLLECTION
+                CLIENTES_COLLECTION,
                 { metaData: METADATA}
             );
             /*
