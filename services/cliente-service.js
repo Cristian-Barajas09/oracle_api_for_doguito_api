@@ -31,12 +31,33 @@ module.exports = class ClienteService {
         try {
             connection = await oracledb.getConnection();
 
+            let metadata = {
+                "keyColumn": {
+                    "name": "ID"
+                },
+                "contentColumn": {
+                    "name": "JSON_DOCUMENT",
+                    "sqlType": "BLOB"
+                },
+                "versionColumn": {
+                    "name": "VERSION",
+                    "method": "UUID"
+                },
+                "lastModifiedColumn": {
+                    "name": "LAST_MODIFIED"
+                },
+                "creationTimeColumn": {
+                    "name": "CREATED_ON"
+                }
+            };
+
+
             const soda = connection.getSodaDatabase();
-            console.log('soda a sido obtenida: ',soda); // <- verficar que soda no sea null
-            const clienteCollection = await soda.createCollection(CLIENTES_COLLECTION);
-            console.log('collecion de clientes obtenida: ',clienteCollection)
+            console.log('soda a sido obtenida: ', soda); // <- verficar que soda no sea null
+            const clienteCollection = await soda.createCollection(CLIENTES_COLLECTION, { "metadata": metadata });
+            console.log('collecion de clientes obtenida: ', clienteCollection)
             let clientes = await clienteCollection.find().getDocuments();
-            console.log('datos de los clientes: ',clientes)
+            console.log('datos de los clientes: ', clientes)
             clientes.forEach((element) => {
                 result.push({
                     id: element.key,
@@ -46,7 +67,7 @@ module.exports = class ClienteService {
                 });
             });
         } catch (err) {
-            console.error("a ocurrido un error: ",err);
+            console.error("a ocurrido un error: ", err);
         } finally {
             if (connection) {
                 try {
