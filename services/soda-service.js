@@ -28,7 +28,7 @@ module.exports = class SodaService {
             const soda = connection.getSodaDatabase();
         
             // Obtener los nombres de todas las colecciones
-            const collectionNames = soda.getCollectionNames();
+            const collectionNames = await soda.getCollectionNames();
         
             console.log('Nombres de las colecciones: ', collectionNames);
 
