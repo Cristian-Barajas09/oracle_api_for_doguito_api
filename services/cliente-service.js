@@ -35,12 +35,12 @@ module.exports = class ClienteService {
 
 
             const soda = connection.getSodaDatabase();
-            console.log('soda a sido obtenida: ', soda); // <- verficar que soda no sea null
+
             const clienteCollection = await soda.createCollection(
                 CLIENTES_COLLECTION,{metaData: METADATA});
-            console.log('collecion de clientes obtenida: ', clienteCollection)
+
             let clientes = await clienteCollection.find().getDocuments();
-            console.log('datos de los clientes: ', clientes)
+
             clientes.forEach((element) => {
                 result.push({
                     id: element.key,
@@ -141,7 +141,10 @@ module.exports = class ClienteService {
         try {
             connection = await oracledb.getConnection();
             const soda = connection.getSodaDatabase();
-            const clienteCollection = await soda.createCollection(CLIENTES_COLLECTION);
+            const clienteCollection = await soda.createCollection(CLIENTES_COLLECTION,
+                {
+                    metaData: METADATA
+                });
             cliente = await clienteCollection.find().key(id).replaceOneAndGet(cliente);
             result = {
                 id: cliente.key,
@@ -172,7 +175,11 @@ module.exports = class ClienteService {
             connection = await oracledb.getConnection();
 
             const soda = connection.getSodaDatabase();
-            const clienteCollection = await soda.createCollection(CLIENTES_COLLECTION);
+            const clienteCollection = await soda.createCollection(
+                CLIENTES_COLLECTION, {
+                    metaData: METADATA
+                }
+            );
             removed = await clienteCollection.find().key(clienteId).remove();
 
         } catch (err) {
