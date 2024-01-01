@@ -9,6 +9,7 @@ const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const clientesRouter = require('./routes/clientes');
 const ClienteService = require('./services/cliente-service');
+const SodaService = require('./services/soda-service');
 
 const app = express();
 
@@ -47,6 +48,11 @@ app.use((err, req, res) => {
 ClienteService.init().then((clienteService) => {
   app.set('clienteService', clienteService);
 });
+
+SodaService.init().then((sodaService) => {
+  app.set('sodaService', sodaService);
+});
+
 
 process.on('exit', () => {
   app.get('clienteService').closePool();
