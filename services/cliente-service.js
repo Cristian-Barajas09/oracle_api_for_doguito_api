@@ -1,5 +1,6 @@
 const oracledb = require('oracledb');
 
+
 oracledb.outFormat = oracledb.OBJECT;
 oracledb.fetchAsString = [oracledb.CLOB];
 oracledb.autoCommit = true;
@@ -30,15 +31,22 @@ module.exports = class ClienteService {
 
         try {
             connection = await oracledb.getConnection();
+            
 
-            let metadata = {
+
+            const soda = connection.getSodaDatabase();
+            console.log('soda a sido obtenida: ', soda); // <- verficar que soda no sea null
+            const clienteCollection = await soda.createCollection(
+                CLIENTES_COLLECTION,{metaData:{
                 "keyColumn": {
-                    "name": "ID"
+                    "name": "ID",
+                    assignmentMethod: "UUID"
                 },
                 "contentColumn": {
                     "name": "JSON_DOCUMENT",
                     "sqlType": "BLOB"
                 },
+                
                 "versionColumn": {
                     "name": "VERSION",
                     "method": "UUID"
@@ -49,12 +57,7 @@ module.exports = class ClienteService {
                 "creationTimeColumn": {
                     "name": "CREATED_ON"
                 }
-            };
-
-
-            const soda = connection.getSodaDatabase();
-            console.log('soda a sido obtenida: ', soda); // <- verficar que soda no sea null
-            const clienteCollection = await soda.createCollection(CLIENTES_COLLECTION, { "metadata": metadata });
+            }});
             console.log('collecion de clientes obtenida: ', clienteCollection)
             let clientes = await clienteCollection.find().getDocuments();
             console.log('datos de los clientes: ', clientes)
